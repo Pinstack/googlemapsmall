@@ -1,0 +1,86 @@
+{
+  "schema_version": "1.0",
+  "protobuf_version": "3",
+  "message_types": {
+    "PlaceData": {
+      "fields": {
+        "1": {
+          "name": "place_id",
+          "type": "string",
+          "description": "Google Places API place identifier"
+        },
+        "2": {
+          "name": "name",
+          "type": "string",
+          "description": "Place name"
+        },
+        "3": {
+          "name": "location",
+          "type": "message",
+          "message_type": "LatLng",
+          "description": "Geographic coordinates"
+        },
+        "4": {
+          "name": "categories",
+          "type": "repeated",
+          "element_type": "string",
+          "description": "Business categories"
+        },
+        "5": {
+          "name": "tenant_list",
+          "type": "repeated",
+          "element_type": "message",
+          "message_type": "Tenant",
+          "description": "List of tenants in the mall"
+        }
+      }
+    },
+    "LatLng": {
+      "fields": {
+        "1": {
+          "name": "latitude",
+          "type": "double",
+          "description": "Latitude coordinate"
+        },
+        "2": {
+          "name": "longitude",
+          "type": "double",
+          "description": "Longitude coordinate"
+        }
+      }
+    },
+    "Tenant": {
+      "fields": {
+        "1": {
+          "name": "id",
+          "type": "string",
+          "description": "Tenant identifier"
+        },
+        "2": {
+          "name": "name",
+          "type": "string",
+          "description": "Brand/store name"
+        },
+        "3": {
+          "name": "category",
+          "type": "string",
+          "description": "Business category"
+        },
+        "4": {
+          "name": "floor",
+          "type": "string",
+          "description": "Floor level (optional)"
+        },
+        "5": {
+          "name": "location",
+          "type": "message",
+          "message_type": "LatLng",
+          "description": "Specific location within mall"
+        }
+      }
+    }
+  },
+  "root_message": "PlaceData",
+  "confidence_score": 0.85,
+  "source": "blackboxprotobuf_inference"
+}

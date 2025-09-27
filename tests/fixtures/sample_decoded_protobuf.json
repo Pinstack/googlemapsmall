@@ -1,0 +1,59 @@
+{
+  "decoded_data": {
+    "place_id": "0x4887c78e6281b45d:0xc4ad4b61a12fde3f",
+    "name": "St James Quarter",
+    "location": {
+      "latitude": 55.9552777,
+      "longitude": -3.1885505
+    },
+    "categories": [
+      "Shopping Mall",
+      "Shopping Center"
+    ],
+    "tenant_list": [
+      {
+        "id": "brand_001",
+        "name": "Apple Store",
+        "category": "Electronics",
+        "floor": "Level 1",
+        "location": {
+          "latitude": 55.9552777,
+          "longitude": -3.1885505
+        }
+      },
+      {
+        "id": "brand_002",
+        "name": "H&M",
+        "category": "Fashion",
+        "floor": "Level 2",
+        "location": {
+          "latitude": 55.9552777,
+          "longitude": -3.1885505
+        }
+      },
+      {
+        "id": "brand_003",
+        "name": "Pret A Manger",
+        "category": "Food & Drink",
+        "floor": "Ground",
+        "location": {
+          "latitude": 55.9552777,
+          "longitude": -3.1885505
+        }
+      }
+    ]
+  },
+  "schema_info": {
+    "field_count": 5,
+    "nested_messages": ["LatLng", "Tenant"],
+    "repeated_fields": ["categories", "tenant_list"]
+  },
+  "field_mappings": {
+    "1": "place_id",
+    "2": "name",
+    "3": "location",
+    "4": "categories",
+    "5": "tenant_list"
+  },
+  "confidence_score": 0.85
+}

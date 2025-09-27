@@ -1,0 +1,292 @@
+"""HAR Analyzer Module for Google Maps Mall Scraping.
+
+Processes HTTP Archive (HAR) files to extract Google Maps network patterns
+and identify tenant data loading mechanisms.
+"""
+
+import json
+from pathlib import Path
+from typing import Any, Dict, List, Optional
+
+
+def analyze_har_file(
+    har_file_path: str, mall_context: Dict[str, Any]
+) -> Dict[str, Any]:
+    """Analyze HAR file for Google Maps mall interactions.
+
+    Args:
+        har_file_path: Path to HAR file
+        mall_context: Dict with mall_id, coordinates, expected_brand_count
+
+    Returns:
+        Dict containing:
+        - network_requests: List of identified API calls
+        - protobuf_endpoints: List of protobuf-encoded endpoints
+        - data_patterns: Identified loading patterns
+        - session_context: Extracted session parameters
+
+    Raises:
+        FileNotFoundError: When HAR file doesn't exist
+        ValueError: When HAR file is malformed
+    """
+    har_path = Path(har_file_path)
+
+    if not har_path.exists():
+        raise FileNotFoundError(f"HAR file not found: {har_file_path}")
+
+    try:
+        with open(har_path, "r", encoding="utf-8") as f:
+            har_data = json.load(f)
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Invalid HAR file format: {e}")
+
+    # Validate HAR structure
+    if not isinstance(har_data, dict) or "log" not in har_data:
+        raise ValueError("Invalid HAR file: missing 'log' section")
+
+    log_data = har_data["log"]
+    if not isinstance(log_data, dict) or "entries" not in log_data:
+        raise ValueError("Invalid HAR file: missing 'entries' in log section")
+
+    # Extract log entries
+    log_entries = log_data["entries"]
+
+    if not isinstance(log_entries, list):
+        raise ValueError("Invalid HAR file: 'entries' must be a list")
+
+    if not log_entries:
+        raise ValueError("HAR file contains no network entries")
+
+    # Analyze network requests
+    network_requests = _analyze_network_requests(log_entries, mall_context)
+    protobuf_endpoints = _identify_protobuf_endpoints(log_entries)
+    data_patterns = _extract_data_patterns(log_entries, mall_context)
+    session_context = _extract_session_context(log_entries)
+
+    return {
+        "network_requests": network_requests,
+        "protobuf_endpoints": protobuf_endpoints,
+        "data_patterns": data_patterns,
+        "session_context": session_context,
+    }
+
+
+def _analyze_network_requests(
+    entries: List[Dict[str, Any]], mall_context: Dict[str, Any]
+) -> List[Dict[str, Any]]:
+    """Analyze network requests for mall-related API calls."""
+    network_requests = []
+
+    for entry in entries:
+        request = entry.get("request", {})
+        response = entry.get("response", {})
+
+        url = request.get("url", "")
+        method = request.get("method", "")
+        status = response.get("status", 0)
+        content = response.get("content", {})
+        size = content.get("size", 0)
+
+        # Check if this is a tenant data request
+        is_tenant_data = _is_tenant_data_request(url, method, status, size)
+
+        # Extract protobuf parameters from URL
+        protobuf_params = _extract_protobuf_params(url)
+
+        # Determine request category
+        category = _categorize_request(url, method, is_tenant_data)
+
+        if protobuf_params or is_tenant_data or category != "other":
+            network_requests.append(
+                {
+                    "url": url,
+                    "method": method,
+                    "protobuf_params": protobuf_params,
+                    "response_size": size,
+                    "is_tenant_data": is_tenant_data,
+                    "category": category,
+                }
+            )
+
+    return network_requests
+
+
+def _identify_protobuf_endpoints(  # noqa: E501
+    entries: List[Dict[str, Any]],
+) -> List[Dict[str, Any]]:
+    """Identify endpoints that use protobuf encoding."""
+    protobuf_endpoints = []
+
+    for entry in entries:
+        request = entry.get("request", {})
+        response = entry.get("response", {})
+
+        url = request.get("url", "")
+        content_type = ""
+
+        # Check response headers for content type
+        for header in response.get("headers", []):
+            if header.get("name", "").lower() == "content-type":
+                content_type = header.get("value", "").lower()
+                break
+
+        # Check for protobuf indicators
+        is_protobuf = (
+            "pb=" in url
+            or "protobuf" in content_type
+            or "octet-stream" in content_type  # noqa: E501
+        )
+
+        if is_protobuf:
+            protobuf_params = _extract_protobuf_params(url)
+            frequency = 1  # Simplified - would count occurrences in real implementation  # noqa: E501
+
+            protobuf_endpoints.append(
+                {
+                    "endpoint": url,
+                    "parameter_structure": protobuf_params,
+                    "response_schema": {
+                        "type": "protobuf",
+                        "content_type": content_type,
+                    },
+                    "frequency": frequency,
+                }
+            )
+
+    return protobuf_endpoints
+
+
+def _extract_data_patterns(
+    entries: List[Dict[str, Any]], mall_context: Dict[str, Any]
+) -> Dict[str, Any]:
+    """Extract patterns from network data."""
+    # Simplified pattern extraction
+    pagination_trigger = None
+    session_persistence: Dict[str, Any] = {}
+    rate_limiting: Dict[str, Any] = {}
+
+    # Look for pagination patterns
+    for entry in entries:
+        url = entry.get("request", {}).get("url", "")
+        if "start=" in url or "cursor=" in url or "page=" in url:
+            pagination_trigger = "cursor-based"
+            break
+
+    # Look for session parameters
+    session_params = set()
+    for entry in entries:
+        query_string = entry.get("request", {}).get("queryString", [])
+        for param in query_string:
+            name = param.get("name", "")
+            if "session" in name.lower() or "auth" in name.lower():
+                session_params.add(name)
+
+    if session_params:
+        session_persistence = {
+            "parameters": list(session_params),
+            "persistence_method": "query_parameters",
+        }
+
+    return {
+        "pagination_trigger": pagination_trigger,
+        "session_persistence": session_persistence,
+        "rate_limiting": rate_limiting,
+    }
+
+
+def _extract_session_context(entries: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """Extract session context from network requests."""
+    auth_params = {}
+    client_fingerprint = None
+    session_id = None
+
+    for entry in entries:
+        request = entry.get("request", {})
+
+        # Check headers for session/auth info
+        for header in request.get("headers", []):
+            name = header.get("name", "").lower()
+            value = header.get("value", "")
+
+            if "authorization" in name or "auth" in name:
+                auth_params[name] = value
+            elif "x-client-data" in name or "fingerprint" in name:
+                client_fingerprint = value
+            elif "session" in name or "sid" in name:
+                session_id = value
+
+        # Check query parameters
+        for param in request.get("queryString", []):
+            name = param.get("name", "").lower()
+            value = param.get("value", "")
+
+            if "authuser" in name:
+                auth_params["authuser"] = value
+            elif "session" in name or "sid" in name:
+                session_id = value
+
+    return {
+        "auth_params": auth_params,
+        "client_fingerprint": client_fingerprint,
+        "session_id": session_id,
+    }
+
+
+def _is_tenant_data_request(
+    url: str, method: str, status: int, size: int
+) -> bool:  # noqa: E501
+    """Determine if a request is likely to contain tenant data."""
+    if method != "GET" or status != 200:
+        return False
+
+    # Check URL patterns that typically contain tenant data
+    tenant_indicators = [  # noqa: E501
+        "place",
+        "search",
+        "maps/_/js",
+        "maps/vt",
+        "preview/place",
+    ]
+
+    url_lower = url.lower()
+    return (  # noqa: E501
+        any(indicator in url_lower for indicator in tenant_indicators)
+        and size > 1000  # noqa: E501
+    )
+
+
+def _extract_protobuf_params(url: str) -> Optional[str]:  # noqa: E501
+    """Extract protobuf parameters from URL."""
+    if "pb=" not in url:
+        return None
+
+    # Extract the pb parameter value
+    pb_start = url.find("pb=")
+    if pb_start == -1:
+        return None
+
+    pb_value = url[pb_start + 3 :]  # Skip "pb="  # noqa: E203
+    # Find the end of this parameter (next & or end of string)
+    ampersand_pos = pb_value.find("&")
+    if ampersand_pos != -1:
+        pb_value = pb_value[:ampersand_pos]
+
+    return pb_value
+
+
+def _categorize_request(url: str, method: str, is_tenant_data: bool) -> str:
+    """Categorize the type of request."""
+    url_lower = url.lower()
+
+    if "view_all" in url_lower or "see_all" in url_lower:
+        return "view_all"
+    elif "category" in url_lower and (  # noqa: E501
+        "start=" in url_lower or "cursor=" in url_lower
+    ):
+        return "category_pagination"
+    elif "tile" in url_lower or "vt" in url_lower:
+        return "tile_data"
+    elif is_tenant_data:
+        return "tenant_data"
+    else:
+        return "other"

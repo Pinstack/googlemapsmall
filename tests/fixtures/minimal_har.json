@@ -1,0 +1,146 @@
+{
+  "log": {
+    "version": "1.2",
+    "creator": {
+      "name": "TestFixture",
+      "version": "1.0"
+    },
+    "pages": [
+      {
+        "startedDateTime": "2025-09-27T10:52:24.651Z",
+        "id": "page_1",
+        "title": "Test Mall Page",
+        "pageTimings": {
+          "onContentLoad": 663.469,
+          "onLoad": 955.557
+        }
+      }
+    ],
+    "entries": [
+      {
+        "startedDateTime": "2025-09-27T10:52:24.651Z",
+        "time": 123.456,
+        "request": {
+          "method": "GET",
+          "url": "https://www.google.com/maps/preview/place?authuser=0&hl=en&gl=gb&pb=!1m16!1sPLACE_ID!3m8!1m3!1dDELTA!2dLONG!3dLAT!3m2!1i1492!2i499!4f13.1",
+          "httpVersion": "HTTP/2.0",
+          "headers": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ],
+          "queryString": [
+            {"name": "authuser", "value": "0"},
+            {"name": "hl", "value": "en"},
+            {"name": "gl", "value": "gb"},
+            {"name": "pb", "value": "!1m16!1sPLACE_ID!3m8!1m3!1dDELTA!2dLONG!3dLAT!3m2!1i1492!2i499!4f13.1"}
+          ],
+          "cookies": [],
+          "headersSize": 1234,
+          "bodySize": 0
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "httpVersion": "HTTP/2.0",
+          "headers": [
+            {
+              "name": "Content-Type",
+              "value": "application/json; charset=UTF-8"
+            },
+            {
+              "name": "Content-Length",
+              "value": "392242"
+            }
+          ],
+          "cookies": [],
+          "content": {
+            "size": 392242,
+            "mimeType": "application/json; charset=UTF-8",
+            "text": "{\"d\":[{\"id\":\"test_brand_1\",\"name\":\"Test Brand\",\"category\":\"Fashion\",\"location\":{\"lat\":55.95,\"lng\":-3.18}}]}"
+          },
+          "redirectURL": "",
+          "headersSize": 567,
+          "bodySize": 392242
+        },
+        "cache": {},
+        "timings": {
+          "blocked": 1.234,
+          "dns": 5.678,
+          "connect": 12.345,
+          "send": 0.123,
+          "wait": 89.012,
+          "receive": 15.064,
+          "ssl": 10.987
+        },
+        "serverIPAddress": "142.250.187.68",
+        "connection": "95324",
+        "_initiator": {
+          "type": "script"
+        }
+      },
+      {
+        "startedDateTime": "2025-09-27T10:52:25.123Z",
+        "time": 234.567,
+        "request": {
+          "method": "POST",
+          "url": "https://www.google.com/maps/vt/stream",
+          "httpVersion": "HTTP/2.0",
+          "headers": [
+            {
+              "name": "Content-Type",
+              "value": "application/vnd.google.octet-stream-compressible"
+            }
+          ],
+          "queryString": [
+            {"name": "pb", "value": "!1m5!1m4!1i12!2i34!3i5678!4i9012!2m2!1e1!2e2"}
+          ],
+          "cookies": [],
+          "headersSize": 890,
+          "bodySize": 0
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "httpVersion": "HTTP/2.0",
+          "headers": [
+            {
+              "name": "Content-Type",
+              "value": "application/vnd.google.octet-stream-compressible"
+            }
+          ],
+          "cookies": [],
+          "content": {
+            "size": 1750000,
+            "mimeType": "application/vnd.google.octet-stream-compressible",
+            "encoding": "base64",
+            "text": "UHJvdG9idWYgZGF0YSB3b3VsZCBiZSBoZXJl"
+          },
+          "redirectURL": "",
+          "headersSize": 345,
+          "bodySize": 1750000
+        },
+        "cache": {},
+        "timings": {
+          "blocked": 2.345,
+          "dns": 0,
+          "connect": 0,
+          "send": 1.234,
+          "wait": 156.789,
+          "receive": 74.199,
+          "ssl": 0
+        },
+        "serverIPAddress": "142.250.187.68",
+        "connection": "95324",
+        "_initiator": {
+          "type": "script"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,7 @@
+README.md
+pyproject.toml
+src/googlemapsmall.egg-info/PKG-INFO
+src/googlemapsmall.egg-info/SOURCES.txt
+src/googlemapsmall.egg-info/dependency_links.txt
+src/googlemapsmall.egg-info/requires.txt
+src/googlemapsmall.egg-info/top_level.txt

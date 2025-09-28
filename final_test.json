@@ -1,0 +1,168 @@
+{
+  "brands": [
+    {
+      "id": null,
+      "name": "John Lewis & Partners",
+      "category": "Unknown",
+      "floor_level": "Various",
+      "operating_hours": null,
+      "phone": null,
+      "website": null,
+      "rating": null,
+      "review_count": null,
+      "confidence_score": 0.85
+    },
+    {
+      "id": null,
+      "name": "St James Quarter",
+      "category": "Unknown",
+      "floor_level": "Various",
+      "operating_hours": null,
+      "phone": null,
+      "website": null,
+      "rating": null,
+      "review_count": null,
+      "confidence_score": 0.85
+    },
+    {
+      "id": null,
+      "name": "OMNi Centre",
+      "category": "Unknown",
+      "floor_level": "Various",
+      "operating_hours": null,
+      "phone": null,
+      "website": null,
+      "rating": null,
+      "review_count": null,
+      "confidence_score": 0.85
+    },
+    {
+      "id": null,
+      "name": "Waverley Market",
+      "category": "Unknown",
+      "floor_level": "Various",
+      "operating_hours": null,
+      "phone": null,
+      "website": null,
+      "rating": null,
+      "review_count": null,
+      "confidence_score": 0.85
+    },
+    {
+      "id": null,
+      "name": "Multrees Walk",
+      "category": "Unknown",
+      "floor_level": "Various",
+      "operating_hours": null,
+      "phone": null,
+      "website": null,
+      "rating": null,
+      "review_count": null,
+      "confidence_score": 0.85
+    },
+    {
+      "id": null,
+      "name": "Newkirkgate Shopping Centre",
+      "category": "Unknown",
+      "floor_level": "Various",
+      "operating_hours": null,
+      "phone": null,
+      "website": null,
+      "rating": null,
+      "review_count": null,
+      "confidence_score": 0.85
+    },
+    {
+      "id": null,
+      "name": "Meadowbank Shopping Park",
+      "category": "Unknown",
+      "floor_level": "Various",
+      "operating_hours": null,
+      "phone": null,
+      "website": null,
+      "rating": null,
+      "review_count": null,
+      "confidence_score": 0.85
+    },
+    {
+      "id": null,
+      "name": "Sign in",
+      "category": "Unknown",
+      "floor_level": "Various",
+      "operating_hours": null,
+      "phone": null,
+      "website": null,
+      "rating": null,
+      "review_count": null,
+      "confidence_score": 0.85
+    }
+  ],
+  "categories": [
+    {
+      "id": null,
+      "name": "Overview",
+      "brand_count": 0,
+      "has_pagination": false
+    },
+    {
+      "id": null,
+      "name": "RatingHoursAll filters",
+      "brand_count": 0,
+      "has_pagination": false
+    }
+  ],
+  "har_data": {
+    "log": {
+      "version": "1.2",
+      "creator": {
+        "name": "GoogleMapsMallScraper",
+        "version": "1.0"
+      },
+      "entries": []
+    }
+  },
+  "har_analysis": null,
+  "protobuf_decodings": [],
+  "metadata": {
+    "session_duration_seconds": 29.42,
+    "interactions_performed": 0,
+    "brands_extracted": 8,
+    "categories_extracted": 2,
+    "total_entities": 10,
+    "success_rate": 1.0,
+    "extraction_efficiency": 0.34,
+    "strategy_used": "view_all",
+    "session_persistence_used": false,
+    "proxy_rotation_used": false,
+    "consent_cleared": true,
+    "rate_limiting_encountered": false,
+    "har_analysis_performed": false,
+    "protobuf_decodings_found": 0,
+    "har_recommendations": [],
+    "errors_encountered": [],
+    "warnings_count": 0,
+    "retry_attempts": 0,
+    "har_entries_captured": 0,
+    "scraping_mode": "real_with_antibot",
+    "timestamp": 1759006962.777757,
+    "antibot_measures_applied": [
+      "realistic_user_agent",
+      "human_mouse_movement",
+      "randomized_delays",
+      "consent_automation",
+      "session_persistence"
+    ],
+    "processing_success_rate": 1.0,
+    "brands_processed": 8,
+    "brands_rejected": 0,
+    "categories_processed": 2,
+    "categories_rejected": 0,
+    "total_brands_input": 8,
+    "total_categories_input": 2,
+    "data_consistency_valid": false,
+    "count_accuracy_valid": true,
+    "processing_errors": [],
+    "antibot_enabled": true,
+    "session_duration": 29.43575382232666
+  }
+}
